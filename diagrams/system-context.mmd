@@ -1,0 +1,22 @@
+flowchart LR
+  Lead(["Lead / customer"])
+  Manager(["Sales manager"])
+  Operator(["Operator / LeadUp admin"])
+  subgraph SYS["Lead Qualification Agent"]
+    Core["Agent service"]
+  end
+  TG["Telegram Bot API"]
+  WA["WhatsApp Cloud API"]
+  LLM["LLM provider API"]
+  CRM[("CRM - Bitrix24")]
+  Lead -->|messages| TG
+  Lead -->|messages| WA
+  TG -->|webhook| Core
+  WA -->|webhook| Core
+  Core -->|replies| TG
+  Core -->|replies| WA
+  Core -->|prompts and tool calls| LLM
+  Core -->|create or update lead| CRM
+  Core -->|handoff notification| Manager
+  Manager -->|takes over chat, corrects labels| Core
+  Operator -->|config and metrics| Core

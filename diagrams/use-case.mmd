@@ -1,0 +1,27 @@
+flowchart LR
+  Lead(["Lead"])
+  Manager(["Manager"])
+  Operator(["Operator"])
+  subgraph UCS["Agent system"]
+    UC1("Send message")
+    UC2("Answer qualification questions")
+    UC3("Ask FAQ")
+    UC4("Request human")
+    UC5("Qualify and extract lead data")
+    UC6("Create or update CRM lead")
+    UC7("Hand over to manager")
+    UC8("Review and correct lead")
+    UC9("Configure fields, rules, knowledge base")
+    UC10("View metrics and traces")
+  end
+  Lead --> UC1
+  Lead --> UC2
+  Lead --> UC3
+  Lead --> UC4
+  UC1 -. include .-> UC5
+  UC5 -. include .-> UC6
+  UC4 -. triggers .-> UC7
+  Manager --> UC7
+  Manager --> UC8
+  Operator --> UC9
+  Operator --> UC10

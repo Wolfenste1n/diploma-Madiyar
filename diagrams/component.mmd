@@ -1,0 +1,38 @@
+flowchart TB
+  subgraph CH["Channels"]
+    TGA["Telegram adapter"]
+    WAA["WhatsApp adapter"]
+  end
+  NORM["Message normalizer"]
+  Q[("Job queue - Redis")]
+  subgraph CORE["Agent core"]
+    CM["Conversation manager - state machine"]
+    PB["Prompt builder"]
+    LC["LLM client interface"]
+    TE["Tool executor - whitelist"]
+    GR["Guardrails - schema and policy validation"]
+    HO["Handoff service"]
+  end
+  KB[("Knowledge base")]
+  DB[("PostgreSQL - dialogues, leads, traces")]
+  subgraph INT["Integrations"]
+    CA["CRM adapter interface"]
+    B24["Bitrix24 adapter"]
+    MOCK["Mock CRM for tests"]
+  end
+  EV["Evaluation harness and metrics"]
+  TGA --> NORM
+  WAA --> NORM
+  NORM --> Q --> CM
+  CM --> PB --> LC
+  LC --> TE
+  TE --> CA
+  CA --> B24
+  CA --> MOCK
+  LC --> GR --> CM
+  PB --> KB
+  CM --> DB
+  CM --> HO
+  CM --> TGA
+  CM --> WAA
+  DB --> EV

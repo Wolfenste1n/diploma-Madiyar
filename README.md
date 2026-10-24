@@ -13,47 +13,56 @@
 
 Topic status: approved by the supervisor; committee approval pending.
 
-## Problem
+## Problem, users, outcomes
 
-Small businesses receive leads through messengers (Telegram, WhatsApp). One manager cannot answer every inbound message quickly, so leads wait for a reply, arrive with incomplete data, or never reach the CRM. Rule-based chatbots cover only fixed scripts and fail on free-form questions.
+Leads arrive in Telegram and WhatsApp in free text; one manager cannot answer all of them in time and copies data into the CRM by hand. The project builds and evaluates an LLM agent that qualifies leads and writes validated lead cards to a CRM, with handoff to a human. Target users: customers, sales managers, and the operator (LeadUp agency). Pilot: Altay Santeh Opt, Astana.
 
-Evidence and its status (verified / author experience / assumption): [docs/02-evidence.md](docs/02-evidence.md).
+Expected outcomes: a working MVP (Telegram, Bitrix24 adapter, handoff), an evaluation report against baselines, documentation and a reproducible setup.
 
-## Target users
+Scope: Telegram, WhatsApp, Russian text, Bitrix24 adapter, human handoff, evaluation. Out of scope: Instagram, TikTok, voice, own CRM, fine-tuning.
 
-1. **Lead / customer** writing to a business in Telegram or WhatsApp.
-2. **Sales manager** who receives qualified leads and handoffs.
-3. **Business owner / operator** (LeadUp agency) who configures the qualification rules and monitors quality metrics.
+## Current status
 
-Pilot domain: plumbing and heating supplies (Altay Santeh Opt, Astana).
+**Stage: probationary period 1 (analysis and design). No runnable code yet.** Version for the consolidated report: tag `prob-period-1`.
 
-## Aim
+## Documentation (sections 1 to 11)
 
-Design, implement and evaluate an LLM-based agent that talks to an inbound lead, collects the data needed for qualification, classifies the lead (HOT / WARM / COLD), and writes a complete, structured lead card to a CRM, handing over to a human when needed.
+| Section | File |
+|---|---|
+| 1 Project proposal | [docs/01-project-proposal.md](docs/01-project-proposal.md) |
+| 2 Evidence of relevance | [docs/02-evidence-of-relevance.md](docs/02-evidence-of-relevance.md) |
+| 3 Literature review | [docs/03-literature-review.md](docs/03-literature-review.md) |
+| 4 Existing system comparison | [docs/04-existing-system-comparison.md](docs/04-existing-system-comparison.md) |
+| 5 Technology comparison | [docs/05-technology-comparison.md](docs/05-technology-comparison.md) |
+| 6 Requirements specification | [docs/06-requirements-specification.md](docs/06-requirements-specification.md) |
+| 7 Architecture and diagrams | [docs/07-architecture-and-diagrams.md](docs/07-architecture-and-diagrams.md) |
+| 8 UX / prototype | [docs/08-ux-prototype.md](docs/08-ux-prototype.md) |
+| 9 Verification and evaluation plan | [docs/09-verification-and-evaluation-plan.md](docs/09-verification-and-evaluation-plan.md) |
+| 10 Project management and risks | [docs/10-project-management-and-risks.md](docs/10-project-management-and-risks.md) |
+| 11 Supervisor feedback | [docs/11-supervisor-feedback.md](docs/11-supervisor-feedback.md) |
 
-## Objectives
+Consolidated report (PDF): [report/SE-2407_Kenzhebayev_ProbPeriod1.pdf](report/SE-2407_Kenzhebayev_ProbPeriod1.pdf)
 
-1. Collect evidence about the process and requirements (client and user discussions).
-2. Review literature and existing systems; justify technology choices.
-3. Specify requirements with acceptance criteria; design the architecture.
-4. Implement the MVP: Telegram channel, agent core, CRM adapter (Bitrix24 + mock), human handoff.
-5. Add the WhatsApp channel (Cloud API).
-6. Evaluate against baselines on at least 100 labeled dialogues and report metrics.
+## Repository structure
 
-## Expected outcomes
+```
+docs/        sections 1-11 and the task plan
+diagrams/    editable Mermaid sources (*.mmd); PNG exports in diagrams/png/
+prototype/   mockups of key scenarios
+papers/      source papers (PDF), sources table, index
+report/      consolidated report
+src/         application code (empty at this stage)
+tests/       automated tests (empty at this stage)
+config/      configuration examples (placeholders only)
+```
 
-A working MVP, an evaluation report with metrics against baselines, documentation, and a reproducible setup.
+## Links
 
-## Scope
+- YouTrack project DIP: https://madiyar-diploma.youtrack.cloud/dashboard?id=177-0
+- Technologies (provisional): Python with FastAPI, PostgreSQL, Redis queue, hosted LLM API behind an interface, Telegram Bot API, WhatsApp Cloud API, Bitrix24 REST API.
 
-| In scope | Out of scope (this release) | Stretch |
-|---|---|---|
-| Telegram, WhatsApp, text dialogues (Russian first), one CRM adapter (Bitrix24), human handoff, evaluation | Instagram, TikTok, voice, building an own CRM, fine-tuning foundation models | Photo hints, follow-up reminders, Kazakh dialogues |
+## Working conventions
 
-
-
-## Selected technologies (provisional, see docs/05)
-
-Python + FastAPI, PostgreSQL, Redis job queue, hosted LLM API behind an abstraction layer, Telegram Bot API, WhatsApp Cloud API, Bitrix24 REST API.
-
-
+- Every work item is a YouTrack task `DIP-<n>` with owner, expected outcome, acceptance criteria and deadline.
+- Branch `DIP-<n>-<slug>`; commit message `DIP-<n>: <what changed>`; changes go through a pull request that references the task.
+- Secrets and personal data are never committed; use `config/.env.example` with placeholders.
